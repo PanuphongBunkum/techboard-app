@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 const prisma = new PrismaClient();
 
 // STEP 2: กำหนด Email ของ Admin (ต้องตรงกับหน้าบ้าน)
-const ADMIN_EMAIL = "panuphongoat@gmail.com";
+const ADMIN_EMAIL = "admin@admin.com";
 
 // 1. แก้ไขกระทู้ (เฉพาะเจ้าของ)
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {

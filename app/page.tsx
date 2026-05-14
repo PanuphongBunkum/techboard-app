@@ -7,7 +7,7 @@ export default function Home() {
   const { data: session } = useSession();
   
   // 👑 STEP 1: กำหนด Email ของ Admin
-  const ADMIN_EMAIL = "panuphongoat@gmail.com"; 
+  const ADMIN_EMAIL = "admin@admin.com"; 
   const isAdmin = session?.user?.email === ADMIN_EMAIL;
 
   // --- ส่วนเก็บข้อมูล (State) ---

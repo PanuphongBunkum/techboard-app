@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth";
 
 const prisma = new PrismaClient();
-const ADMIN_EMAIL = "panuphongoat@gmail.com";
+const ADMIN_EMAIL = "admin@admin.com";
 
 // ลบคอมเมนต์ (เจ้าของคอมเมนต์ หรือ Admin)
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
