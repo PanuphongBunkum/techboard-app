@@ -9,20 +9,28 @@ const ADMIN_EMAIL = "panuphongoat@gmail.com";
 
 // 1. แก้ไขกระทู้ (เฉพาะเจ้าของ)
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const session = await getServerSession();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    const body = await req.json();
+    
+    // 🛠️ 1. เพิ่มตัวแปร published มารับค่าจากหน้าบ้าน
+    const { title, content, published } = body; 
 
-  const { title, content } = await req.json();
-  const user = await prisma.user.findUnique({ where: { email: session.user?.email! } });
-  const post = await prisma.post.findUnique({ where: { id: params.id } });
+    // 🛠️ 2. เตรียมข้อมูลที่จะอัปเดต
+    const updateData: any = {};
+    if (title) updateData.title = title;
+    if (content) updateData.content = content;
+    if (published !== undefined) updateData.published = published; // <-- สำคัญมาก: เอาไว้เปลี่ยน Draft เป็น Publish
 
-  // แก้ไขได้เฉพาะเจ้าของเท่านั้น (Admin ก็แก้ข้อความคนอื่นไม่ได้ เพื่อความโปร่งใส)
-  if (post?.authorId !== user?.id) {
-    return NextResponse.json({ error: "No permission" }, { status: 403 });
+    // 🛠️ 3. สั่งฐานข้อมูลให้อัปเดต
+    const updatedPost = await prisma.post.update({
+      where: { id: params.id },
+      data: updateData,
+    });
+
+    return NextResponse.json(updatedPost);
+  } catch (error) {
+    return NextResponse.json({ error: "Error updating post" }, { status: 500 });
   }
-
-  const updated = await prisma.post.update({ where: { id: params.id }, data: { title, content } });
-  return NextResponse.json(updated);
 }
 
 // 2. ลบกระทู้ (เจ้าของ หรือ Admin)
