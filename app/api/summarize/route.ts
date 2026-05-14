@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     }
 
    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
     const prompt = `ช่วยสรุปเนื้อหาต่อไปนี้ให้สั้นและเข้าใจง่ายภายใน 3 บรรทัด: \n\n ${content}`;
     const result = await model.generateContent(prompt);
     const response = await result.response;
